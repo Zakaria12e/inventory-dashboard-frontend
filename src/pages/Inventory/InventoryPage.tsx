@@ -86,11 +86,14 @@ export default function InventoryPage() {
 
   return (
     <div className="flex flex-col gap-4 p-3 md:p-6 lg:p-8 max-w-7xl mx-auto w-full">
+       <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight md:text-2xl">Inventory Items</h1>
+          <p className="text-sm text-muted-foreground">Manage your inventory items and stock levels</p>
+        </div>
+      </div>
       <Card>
-        <CardHeader>
-          <CardTitle>Inventory Items</CardTitle>
-          <CardDescription>Manage your inventory items and stock levels</CardDescription>
-        </CardHeader>
+
         <CardContent>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row gap-2">
