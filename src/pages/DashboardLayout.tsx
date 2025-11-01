@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import React from "react"
-import { Link, useLocation } from "react-router-dom"
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   Package,
   Layers,
@@ -18,10 +18,10 @@ import {
   LogOut,
   Home,
   ChevronDown,
-} from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -29,15 +29,15 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
+} from "@/components/ui/breadcrumb";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Separator } from "@/components/ui/separator"
+} from "@/components/ui/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -53,9 +53,9 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { ModeToggle } from "@/components/mode-toggle"
-import { cn } from "@/lib/utils"
+} from "@/components/ui/sidebar";
+import { ModeToggle } from "@/components/mode-toggle";
+import { cn } from "@/lib/utils";
 
 // ✅ Mock user for now
 const user = {
@@ -63,10 +63,14 @@ const user = {
   email: "zakaria@eurohinca.ma",
   photo: "/user-avatar.png",
   role: "admin",
-}
+};
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const location = useLocation()
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const location = useLocation();
 
   // ✅ Sidebar routes adapted for EUROHINCA Inventory Management
   const routes = [
@@ -92,7 +96,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       to: "/dashboard/alerts",
       label: "Alerts",
       icon: AlertTriangle,
-      color: "text-amber-600 dark:text-amber-400",
+      color: "text-destructive dark:text-destructive",
     },
     {
       to: "/dashboard/reports",
@@ -105,8 +109,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       label: "Users",
       icon: Users,
       color: "text-blue-600 dark:text-blue-400",
-      visible: user.role === "admin",
+      visible: ["admin", "super_admin"].includes(user.role),
     },
+    {
+      to: "/dashboard/activity",
+      label: "Activity Feed",
+      icon: ClipboardList,
+      color: "text-amber-600 dark:text-amber-400",
+      visible: ["admin", "super_admin"].includes(user.role),
+    },
+
     {
       to: "/dashboard/settings",
       label: "Settings",
@@ -119,30 +131,43 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       icon: HelpCircle,
       color: "text-blue-600 dark:text-blue-400",
     },
-  ]
+  ];
 
   const handleLogout = async () => {
-    console.log("User logged out")
-  }
+    console.log("User logged out");
+  };
 
   // ✅ Breadcrumb logic
   const generateBreadcrumb = (pathname: string) => {
-    const segments = pathname.split("/").filter(Boolean)
-    const breadcrumbItems = []
+    const segments = pathname.split("/").filter(Boolean);
+    const breadcrumbItems = [];
 
     if (segments.length > 1) {
-      breadcrumbItems.push({ label: "Dashboard", href: "/dashboard", isLast: false })
+      breadcrumbItems.push({
+        label: "Dashboard",
+        href: "/dashboard",
+        isLast: false,
+      });
       if (segments[1]) {
-        const label = segments[1].charAt(0).toUpperCase() + segments[1].slice(1)
-        breadcrumbItems.push({ label: label.replace("-", " "), href: pathname, isLast: true })
+        const label =
+          segments[1].charAt(0).toUpperCase() + segments[1].slice(1);
+        breadcrumbItems.push({
+          label: label.replace("-", " "),
+          href: pathname,
+          isLast: true,
+        });
       }
     } else {
-      breadcrumbItems.push({ label: "Dashboard", href: "/dashboard", isLast: true })
+      breadcrumbItems.push({
+        label: "Dashboard",
+        href: "/dashboard",
+        isLast: true,
+      });
     }
-    return breadcrumbItems
-  }
+    return breadcrumbItems;
+  };
 
-  const breadcrumbItems = generateBreadcrumb(location.pathname)
+  const breadcrumbItems = generateBreadcrumb(location.pathname);
 
   return (
     <SidebarProvider>
@@ -154,8 +179,16 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <SidebarMenuButton size="lg" asChild>
                 <Link to="/dashboard">
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
-                    <img src="/logo-black.png" alt="Logo Light" className="block dark:hidden" />
-                    <img src="/logo-black.png" alt="Logo Dark" className="hidden dark:block" />
+                    <img
+                      src="/logo-black.png"
+                      alt="Logo Light"
+                      className="block dark:hidden"
+                    />
+                    <img
+                      src="/logo-black.png"
+                      alt="Logo Dark"
+                      className="hidden dark:block"
+                    />
                   </div>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">EUROHINCA</span>
@@ -168,109 +201,120 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </SidebarHeader>
 
         {/* Sidebar Menu */}
-       {/* Sidebar Menu */}
-<SidebarContent>
-  {/* Overview Section */}
-  <SidebarGroup>
-    <SidebarGroupLabel>Overview</SidebarGroupLabel>
-    <SidebarGroupContent>
-      <SidebarMenu>
-        {routes
-          .filter((r) => ["/dashboard"].includes(r.to))
-          .map((route) => {
-            const Icon = route.icon
-            const isActive = location.pathname === route.to
-            return (
-              <SidebarMenuItem key={route.to}>
-                <SidebarMenuButton asChild isActive={isActive}>
-                  <Link to={route.to}>
-                    <Icon className={cn("size-4", route.color)} />
-                    <span>{route.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )
-          })}
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
+        {/* Sidebar Menu */}
+        <SidebarContent>
+          {/* Overview Section */}
+          <SidebarGroup>
+            <SidebarGroupLabel>Overview</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {routes
+                  .filter((r) => ["/dashboard"].includes(r.to))
+                  .map((route) => {
+                    const Icon = route.icon;
+                    const isActive = location.pathname === route.to;
+                    return (
+                      <SidebarMenuItem key={route.to}>
+                        <SidebarMenuButton asChild isActive={isActive}>
+                          <Link to={route.to}>
+                            <Icon className={cn("size-4", route.color)} />
+                            <span>{route.label}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
 
-  {/* Inventory Management Section */}
-  <SidebarGroup>
-    <SidebarGroupLabel>Inventory Management</SidebarGroupLabel>
-    <SidebarGroupContent>
-      <SidebarMenu>
-        {routes
-          .filter((r) => ["/dashboard/inventory", "/dashboard/categories"].includes(r.to))
-          .map((route) => {
-            const Icon = route.icon
-            const isActive = location.pathname === route.to
-            return (
-              <SidebarMenuItem key={route.to}>
-                <SidebarMenuButton asChild isActive={isActive}>
-                  <Link to={route.to}>
-                    <Icon className={cn("size-4", route.color)} />
-                    <span>{route.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )
-          })}
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
+          {/* Inventory Management Section */}
+          <SidebarGroup>
+            <SidebarGroupLabel>Inventory Management</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {routes
+                  .filter((r) =>
+                    ["/dashboard/inventory", "/dashboard/categories"].includes(
+                      r.to
+                    )
+                  )
+                  .map((route) => {
+                    const Icon = route.icon;
+                    const isActive = location.pathname === route.to;
+                    return (
+                      <SidebarMenuItem key={route.to}>
+                        <SidebarMenuButton asChild isActive={isActive}>
+                          <Link to={route.to}>
+                            <Icon className={cn("size-4", route.color)} />
+                            <span>{route.label}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
 
-  {/* Monitoring Section */}
-  <SidebarGroup>
-    <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
-    <SidebarGroupContent>
-      <SidebarMenu>
-        {routes
-          .filter((r) => ["/dashboard/alerts", "/dashboard/reports"].includes(r.to))
-          .map((route) => {
-            const Icon = route.icon
-            const isActive = location.pathname === route.to
-            return (
-              <SidebarMenuItem key={route.to}>
-                <SidebarMenuButton asChild isActive={isActive}>
-                  <Link to={route.to}>
-                    <Icon className={cn("size-4", route.color)} />
-                    <span>{route.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )
-          })}
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
+          {/* Monitoring Section */}
+          <SidebarGroup>
+            <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {routes
+                  .filter((r) =>
+                    ["/dashboard/alerts", "/dashboard/reports", "/dashboard/activity"].includes(r.to)
+                  )
+                  .map((route) => {
+                    const Icon = route.icon;
+                    const isActive = location.pathname === route.to;
+                    return (
+                      <SidebarMenuItem key={route.to}>
+                        <SidebarMenuButton asChild isActive={isActive}>
+                          <Link to={route.to}>
+                            <Icon className={cn("size-4", route.color)} />
+                            <span>{route.label}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
 
-  {/* Administration Section */}
-  <SidebarGroup>
-    <SidebarGroupLabel>Administration</SidebarGroupLabel>
-    <SidebarGroupContent>
-      <SidebarMenu>
-        {routes
-          .filter((r) => ["/dashboard/users", "/dashboard/settings", "/dashboard/support"].includes(r.to))
-          .map((route) => {
-            const Icon = route.icon
-            const isActive = location.pathname === route.to
-            return (
-              <SidebarMenuItem key={route.to}>
-                <SidebarMenuButton asChild isActive={isActive}>
-                  <Link to={route.to}>
-                    <Icon className={cn("size-4", route.color)} />
-                    <span>{route.label}</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            )
-          })}
-      </SidebarMenu>
-    </SidebarGroupContent>
-  </SidebarGroup>
-</SidebarContent>
-
+          {/* Administration Section */}
+          <SidebarGroup>
+            <SidebarGroupLabel>Administration</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {routes
+                  .filter((r) =>
+                    [
+                      "/dashboard/users",
+                      "/dashboard/settings",
+                      "/dashboard/support",
+                    ].includes(r.to)
+                  )
+                  .map((route) => {
+                    const Icon = route.icon;
+                    const isActive = location.pathname === route.to;
+                    return (
+                      <SidebarMenuItem key={route.to}>
+                        <SidebarMenuButton asChild isActive={isActive}>
+                          <Link to={route.to}>
+                            <Icon className={cn("size-4", route.color)} />
+                            <span>{route.label}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
 
         {/* Footer / User Menu */}
         <SidebarFooter>
@@ -284,10 +328,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
                       <AvatarImage src={user.photo} alt={user.name} />
-                      <AvatarFallback className="rounded-lg">{user.name[0]}</AvatarFallback>
+                      <AvatarFallback className="rounded-lg">
+                        {user.name[0]}
+                      </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">{user.name}</span>
+                      <span className="truncate font-semibold">
+                        {user.name}
+                      </span>
                       <span className="truncate text-xs">{user.email}</span>
                     </div>
                     <ChevronDown className="ml-auto size-4" />
@@ -372,5 +420,5 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </main>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
