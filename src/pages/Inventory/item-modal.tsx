@@ -127,29 +127,6 @@ export function ItemModal({ open, onOpenChange, onSave, categories, initialData,
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="item-price">Unit Price ($)</Label>
-              <Input
-                id="item-price"
-                type="number"
-                min="0"
-                step="0.01"
-                value={formData.price}
-                onChange={(e) => setFormData({ ...formData, price: Number.parseFloat(e.target.value) || 0 })}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="item-supplier">Supplier</Label>
-              <Input
-                id="item-supplier"
-                placeholder="Supplier name"
-                value={formData.supplier}
-                onChange={(e) => setFormData({ ...formData, supplier: e.target.value })}
-              />
-            </div>
-            <div className="space-y-2">
               <Label htmlFor="item-threshold">Low Stock Threshold</Label>
               <Input
                 id="item-threshold"

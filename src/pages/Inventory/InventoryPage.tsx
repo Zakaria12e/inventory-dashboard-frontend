@@ -126,7 +126,6 @@ export default function InventoryPage() {
                 <SelectContent>
                   <SelectItem value="name">Sort by Name</SelectItem>
                   <SelectItem value="quantity">Sort by Quantity</SelectItem>
-                  <SelectItem value="price">Sort by Price</SelectItem>
                 </SelectContent>
               </Select>
               <Button
@@ -148,8 +147,6 @@ export default function InventoryPage() {
                     <th className="px-4 py-3 text-left font-semibold">Name</th>
                     <th className="px-4 py-3 text-left font-semibold">Category</th>
                     <th className="px-4 py-3 text-left font-semibold">Quantity</th>
-                    <th className="px-4 py-3 text-left font-semibold">Price</th>
-                    <th className="px-4 py-3 text-left font-semibold">Supplier</th>
                     <th className="px-4 py-3 text-left font-semibold">Status</th>
                     <th className="px-4 py-3 text-right font-semibold">Actions</th>
                   </tr>
