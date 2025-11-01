@@ -12,6 +12,7 @@ import SettingsPage from "@/pages/Settings/SettingsPage"
 import SupportPage from "@/pages/Support/SupportPage"
 import LoginPage from "@/pages/Auth/login/login"
 import SignupPage from "@/pages/Auth/SignupPage"
+import ActivityFeed from "@/pages/ActivityFeed/ActivityFeed"
 import "./App.css"
 
 function App() {
@@ -65,6 +66,17 @@ function App() {
             
                 <DashboardLayout>
                   <ReportsPage />
+                </DashboardLayout>
+              
+            }
+          />
+
+                    <Route
+            path="/dashboard/activity"
+            element={
+            
+                <DashboardLayout>
+                  <ActivityFeed />
                 </DashboardLayout>
               
             }
