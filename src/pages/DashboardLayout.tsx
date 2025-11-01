@@ -78,19 +78,19 @@ export default function DashboardLayout({
       to: "/dashboard",
       label: "Dashboard",
       icon: Home,
-      color: "text-indigo-600 dark:text-indigo-400",
+      color: "text-indigo-400 dark:text-indigo-300",
     },
     {
       to: "/dashboard/inventory",
       label: "Inventory",
       icon: Package,
-      color: "text-fuchsia-600 dark:text-fuchsia-400",
+      color: "text-fuchsia-400 dark:text-fuchsia-300",
     },
     {
       to: "/dashboard/categories",
       label: "Categories",
       icon: Layers,
-      color: "text-lime-600 dark:text-lime-400",
+      color: "text-lime-400 dark:text-lime-300",
     },
     {
       to: "/dashboard/alerts",
