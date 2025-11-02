@@ -10,8 +10,7 @@ import UsersPage from "@/pages/Users/UsersPage"
 import AlertsPage from "@/pages/Alerts/AlertsPage"
 import SettingsPage from "@/pages/Settings/SettingsPage"
 import SupportPage from "@/pages/Support/SupportPage"
-import LoginPage from "@/pages/Auth/login/login"
-import SignupPage from "@/pages/Auth/SignupPage"
+import LoginPage from "@/pages/login/login"
 import ActivityFeed from "@/pages/ActivityFeed/ActivityFeed"
 import "./App.css"
 
@@ -23,7 +22,6 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
 
           {/* Protected routes */}
           <Route

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Truck, MapPin, Lock, Mail, ArrowRight } from "lucide-react";
+import { Lock, Mail, ArrowRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -166,48 +166,6 @@ export default function LoginPage({
               </form>
             </CardContent>
           </Card>
-
-          {/* Right Side Image Section */}
-          <div className="relative hidden md:flex w-1/2 items-center justify-center p-6">
-            <div className="absolute inset-0 bg-[radial-gradient(#f1f5f9_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] opacity-40"></div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="relative z-10 flex flex-col items-center text-center"
-            >
-              {/* Light Mode Image */}
-              <img
-                src="/car-gps-black.png"
-                alt="Fleet Light"
-                className="block dark:hidden w-44 h-44 object-contain mb-4"
-              />
-
-              {/* Dark Mode Image */}
-              <img
-                src="/car-gps-white.png"
-                alt="Fleet Dark"
-                className="hidden dark:block w-44 h-44 object-contain mb-4"
-              />
-
-              <h3 className="text-xl font-bold">Fleet Management</h3>
-              <p className="text-muted-foreground text-sm mt-2">
-                Monitor your vehicles in real-time, get alerts,
-                and optimize routes.
-              </p>
-
-              <div className="flex gap-4 mt-6 text-muted-foreground text-sm">
-                <div className="flex items-center gap-2">
-                  <Truck className="h-4 w-4" />
-                  <span>Tracking</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  <span>Real-time GPS</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
         </div>
       </div>
     </div>
