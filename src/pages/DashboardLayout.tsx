@@ -1,19 +1,15 @@
 "use client";
 
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Package,
   Layers,
   ClipboardList,
-  Barcode,
   Users,
-  Truck,
-  Bell,
-  Settings,
-  BarChart,
   AlertTriangle,
   FileText,
+  Settings,
   HelpCircle,
   LogOut,
   Home,
@@ -56,14 +52,8 @@ import {
 } from "@/components/ui/sidebar";
 import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/utils";
-
-// ✅ Mock user for now
-const user = {
-  name: "Zakaria Elbidali",
-  email: "zakaria@eurohinca.ma",
-  photo: "/user-avatar.png",
-  role: "admin",
-};
+import { useAuth } from "@/context/AuthContext";
+import InventoryLoader from "@/components/Loader"
 
 export default function DashboardLayout({
   children,
@@ -71,71 +61,92 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout, loading } = useAuth();
 
-  // ✅ Sidebar routes adapted for EUROHINCA Inventory Management
+  // ✅ Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login");
+    }
+  }, [loading, user, navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <InventoryLoader />
+      </div>
+    );
+  }
+
+  if (!user) return null; // Prevent rendering before redirect
+
+  // ✅ Sidebar routes
   const routes = [
     {
       to: "/dashboard",
       label: "Dashboard",
       icon: Home,
       color: "text-indigo-400 dark:text-indigo-300",
+      visible: true,
     },
     {
       to: "/dashboard/inventory",
       label: "Inventory",
       icon: Package,
       color: "text-fuchsia-400 dark:text-fuchsia-300",
+      visible: true,
     },
     {
       to: "/dashboard/categories",
       label: "Categories",
       icon: Layers,
       color: "text-lime-400 dark:text-lime-300",
+      visible: true,
     },
     {
       to: "/dashboard/alerts",
       label: "Alerts",
       icon: AlertTriangle,
       color: "text-destructive dark:text-destructive",
+      visible: true,
     },
     {
       to: "/dashboard/reports",
       label: "Reports",
       icon: FileText,
       color: "text-cyan-600 dark:text-cyan-400",
+      visible: true,
     },
     {
       to: "/dashboard/users",
       label: "Users",
       icon: Users,
       color: "text-blue-600 dark:text-blue-400",
-      visible: ["admin", "super_admin"].includes(user.role),
+      visible: ["admin", "superadmin"].includes(user.role),
     },
     {
       to: "/dashboard/activity",
       label: "Activity Feed",
       icon: ClipboardList,
       color: "text-amber-600 dark:text-amber-400",
-      visible: ["admin", "super_admin"].includes(user.role),
+      visible: ["admin", "superadmin"].includes(user.role),
     },
-
     {
       to: "/dashboard/settings",
       label: "Settings",
       icon: Settings,
       color: "text-slate-600 dark:text-slate-300",
+      visible: true,
     },
     {
       to: "/dashboard/support",
       label: "Support",
       icon: HelpCircle,
       color: "text-blue-600 dark:text-blue-400",
+      visible: true,
     },
   ];
-
-  const handleLogout = async () => {
-    console.log("User logged out");
-  };
 
   // ✅ Breadcrumb logic
   const generateBreadcrumb = (pathname: string) => {
@@ -181,7 +192,7 @@ export default function DashboardLayout({
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                     <img
                       src="/logo-black.png"
-                      alt="Logo Light"
+                      alt="Logo"
                       className="block dark:hidden"
                     />
                     <img
@@ -201,7 +212,6 @@ export default function DashboardLayout({
         </SidebarHeader>
 
         {/* Sidebar Menu */}
-        {/* Sidebar Menu */}
         <SidebarContent>
           {/* Overview Section */}
           <SidebarGroup>
@@ -209,7 +219,7 @@ export default function DashboardLayout({
             <SidebarGroupContent>
               <SidebarMenu>
                 {routes
-                  .filter((r) => ["/dashboard"].includes(r.to))
+                  .filter((r) => r.to === "/dashboard" && r.visible)
                   .map((route) => {
                     const Icon = route.icon;
                     const isActive = location.pathname === route.to;
@@ -234,10 +244,11 @@ export default function DashboardLayout({
             <SidebarGroupContent>
               <SidebarMenu>
                 {routes
-                  .filter((r) =>
-                    ["/dashboard/inventory", "/dashboard/categories"].includes(
-                      r.to
-                    )
+                  .filter(
+                    (r) =>
+                      ["/dashboard/inventory", "/dashboard/categories"].includes(
+                        r.to
+                      ) && r.visible
                   )
                   .map((route) => {
                     const Icon = route.icon;
@@ -263,8 +274,13 @@ export default function DashboardLayout({
             <SidebarGroupContent>
               <SidebarMenu>
                 {routes
-                  .filter((r) =>
-                    ["/dashboard/alerts", "/dashboard/reports", "/dashboard/activity"].includes(r.to)
+                  .filter(
+                    (r) =>
+                      [
+                        "/dashboard/alerts",
+                        "/dashboard/reports",
+                        "/dashboard/activity",
+                      ].includes(r.to) && r.visible
                   )
                   .map((route) => {
                     const Icon = route.icon;
@@ -290,12 +306,13 @@ export default function DashboardLayout({
             <SidebarGroupContent>
               <SidebarMenu>
                 {routes
-                  .filter((r) =>
-                    [
-                      "/dashboard/users",
-                      "/dashboard/settings",
-                      "/dashboard/support",
-                    ].includes(r.to)
+                  .filter(
+                    (r) =>
+                      [
+                        "/dashboard/users",
+                        "/dashboard/settings",
+                        "/dashboard/support",
+                      ].includes(r.to) && r.visible
                   )
                   .map((route) => {
                     const Icon = route.icon;
@@ -316,7 +333,7 @@ export default function DashboardLayout({
           </SidebarGroup>
         </SidebarContent>
 
-        {/* Footer / User Menu */}
+        {/* Footer / User Info */}
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -327,9 +344,12 @@ export default function DashboardLayout({
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                   >
                     <Avatar className="h-8 w-8 rounded-lg">
-                      <AvatarImage src={user.photo} alt={user.name} />
+                      <AvatarImage
+                        src={user.photo || "/default-avatar.png"}
+                        alt={user.name}
+                      />
                       <AvatarFallback className="rounded-lg">
-                        {user.name[0]}
+                        {user.name ? user.name[0] : "?"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
@@ -354,7 +374,7 @@ export default function DashboardLayout({
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem onClick={logout}>
                     <LogOut className="mr-2 h-4 w-4" />
                     Log out
                   </DropdownMenuItem>
@@ -373,7 +393,7 @@ export default function DashboardLayout({
           initial={{ y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12"
+          className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear"
         >
           <div className="flex items-center gap-2 px-4">
             <SidebarTrigger className="-ml-1" />
