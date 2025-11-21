@@ -53,7 +53,7 @@ import {
 import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
-import InventoryLoader from "@/components/Loader"
+
 
 export default function DashboardLayout({
   children,
@@ -62,22 +62,10 @@ export default function DashboardLayout({
 }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, logout, loading } = useAuth();
+  const { user, logout } = useAuth();
 
-  // ✅ Redirect to login if not authenticated
-  useEffect(() => {
-    if (!loading && !user) {
-      navigate("/login");
-    }
-  }, [loading, user, navigate]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <InventoryLoader />
-      </div>
-    );
-  }
+
 
   if (!user) return null; // Prevent rendering before redirect
 
